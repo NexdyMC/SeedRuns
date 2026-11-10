@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The End Dimension - Pixel Art Wallpaper Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+  </style>
+</head>
+<body class="bg-[#06030b] text-purple-100 min-h-screen flex flex-col items-center justify-center p-6 selection:bg-purple-600 selection:text-white">
+
+  <!-- Header -->
+  <div class="text-center mb-6 max-w-xl">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-500/40 text-purple-300 text-xs font-semibold mb-3">
+      <i data-lucide="sparkles" class="w-3.5 h-3.5 text-fuchsia-400"></i>
+      <span>Minecraft The End Dimension Generator</span>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-purple-200 via-fuchsia-300 to-amber-200 bg-clip-text text-transparent">
+      The End & Ender Dragon Pixel Canvas
+    </h1>
+    <p class="text-xs text-purple-300/70 mt-1">
+      Wallpaper pixel art atmosferik bertema The End: Pulau End Stone, Pilar Obsidian, End Crystal bercahaya, dan siluet Ender Dragon melayang di kehampaan kosmik.
+    </p>
+  </div>
+
+  <!-- Canvas Frame -->
+  <div class="relative bg-purple-950/30 border border-purple-500/30 rounded-2xl p-3 shadow-2xl backdrop-blur-xl flex flex-col items-center">
+    
+    <!-- Canvas Preview (1920x1080 Native) -->
+    <div class="relative rounded-xl overflow-hidden shadow-2xl border border-purple-500/30 max-w-full">
+      <canvas id="theEndCanvas" width="1920" height="1080" class="w-[840px] max-w-full aspect-video block bg-[#040108]"></canvas>
+      
+      <!-- Overlay Badge -->
+      <div class="absolute top-3 left-3 bg-black/70 backdrop-blur-md border border-purple-500/30 rounded-lg px-2.5 py-1 text-[10px] font-mono text-purple-200 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-fuchsia-400 animate-pulse"></span>
+        1920x1080 HD (The End Dimension)
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-3 w-full mt-4 px-2">
+      <div class="flex items-center gap-2 text-xs text-purple-300/70 font-mono">
+        <i data-lucide="eye" class="w-4 h-4 text-fuchsia-400"></i>
+        <span>Palette: Ender Void, Obsidian & Pale End Stone</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Regenerate Button -->
+        <button id="btnRegenerate" class="flex items-center gap-2 bg-purple-900/50 hover:bg-purple-800/80 border border-purple-500/40 text-purple-200 px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-300"></i>
+          <span>Acak Posisi Dragon & Pilar</span>
+        </button>
+
+        <!-- Download Button -->
+        <button id="btnDownload" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 hover:opacity-95 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-purple-600/30 active:scale-95">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Download Wallpaper The End</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-5 text-center text-xs text-purple-300/50 flex items-center gap-2">
+    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+    <span>Cocok banget dijadikan background halaman SeedRuns tema ungu kamu!</span>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const canvas = document.getElementById('theEndCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Low-res chunky pixel buffer
+    const W = 256;
+    const H = 144;
+
+    const buffer = document.createElement('canvas');
+    buffer.width = W;
+    buffer.height = H;
+    const bCtx = buffer.getContext('2d');
+
+    function drawTheEndPixelArt() {
+      // 1. THE END VOID SKY (Deep pitch cosmic void with subtle purple nebula glow)
+      const skyGrad = bCtx.createLinearGradient(0, 0, 0, H);
+      skyGrad.addColorStop(0.0, '#020005'); // Pitch Black
+      skyGrad.addColorStop(0.4, '#080214'); // Very Deep Void Purple
+      skyGrad.addColorStop(0.7, '#140529'); // Ender Violet Haze
+      skyGrad.addColorStop(1.0, '#1c0838'); // Low Horizon Purple Mist
+      bCtx.fillStyle = skyGrad;
+      bCtx.fillRect(0, 0, W, H);
+
+      // Subtle Purple Nebula Dust Clouds
+      for (let i = 0; i < 60; i++) {
+        const nx = Math.floor(Math.random() * W);
+        const ny = Math.floor(Math.random() * (H * 0.7));
+        const nw = Math.floor(Math.random() * 8) + 3;
+        bCtx.fillStyle = (Math.random() > 0.5) ? 'rgba(168, 85, 247, 0.08)' : 'rgba(217, 70, 239, 0.06)';
+        bCtx.fillRect(nx, ny, nw, 2);
+      }
+
+      // Static End Void Particles (Bukan bintang biasa, tapi partikel debu melayang kehampaan The End)
+      for (let i = 0; i < 75; i++) {
+        const x = Math.floor(Math.random() * W);
+        const y = Math.floor(Math.random() * (H * 0.8));
+        const pType = Math.random();
+        if (pType > 0.7) {
+          bCtx.fillStyle = 'rgba(232, 121, 249, 0.7)'; // Magenta Spark
+        } else if (pType > 0.4) {
+          bCtx.fillStyle = 'rgba(192, 132, 252, 0.5)'; // Light Purple
+        } else {
+          bCtx.fillStyle = 'rgba(255, 255, 255, 0.4)'; // Dim White
+        }
+        bCtx.fillRect(x, y, 1, 1);
+      }
+
+      // 2. ENDER DRAGON SILHOUETTE (Flying in distance)
+      const dragonX = Math.floor(Math.random() * (W * 0.4)) + Math.floor(W * 0.3);
+      const dragonY = Math.floor(Math.random() * 25) + 20;
+
+      function drawEnderDragon(cx, cy) {
+        bCtx.fillStyle = '#06010b'; // Jet Black silhouette
+
+        // Body & Tail
+        bCtx.fillRect(cx - 8, cy, 16, 3);
+        bCtx.fillRect(cx - 14, cy + 1, 6, 2);
+        bCtx.fillRect(cx - 18, cy + 2, 4, 1);
+
+        // Head & Neck
+        bCtx.fillRect(cx + 8, cy - 1, 4, 3);
+        bCtx.fillRect(cx + 12, cy - 2, 5, 3);
+
+        // Glowing Purple Eyes
+        bCtx.fillStyle = '#ec4899';
+        bCtx.fillRect(cx + 15, cy - 2, 1, 1);
+
+        // Wings (Spread out)
+        bCtx.fillStyle = '#0a0212';
+        // Left Wing
+        bCtx.fillRect(cx - 4, cy - 8, 8, 2);
+        bCtx.fillRect(cx - 2, cy - 6, 7, 2);
+        bCtx.fillRect(cx - 1, cy - 4, 6, 2);
+        bCtx.fillRect(cx - 8, cy - 10, 5, 2);
+        // Right Wing
+        bCtx.fillRect(cx - 5, cy + 3, 8, 2);
+        bCtx.fillRect(cx - 3, cy + 5, 7, 2);
+        bCtx.fillRect(cx - 9, cy + 7, 6, 2);
+
+        // Purple aura around dragon
+        bCtx.fillStyle = 'rgba(192, 132, 252, 0.15)';
+        bCtx.fillRect(cx - 16, cy - 10, 34, 20);
+      }
+      drawEnderDragon(dragonX, dragonY);
+
+      // 3. OBSIDIAN PILLARS & END CRYSTAL BEAMS
+      const pillars = [
+        { x: 30, w: 14, h: 68 },
+        { x: 62, w: 10, h: 48 },
+        { x: 95, w: 18, h: 82, hasCrystal: true },
+        { x: 135, w: 12, h: 54 },
+        { x: 168, w: 16, h: 74, hasCrystal: true },
+        { x: 202, w: 11, h: 44 },
+        { x: 228, w: 15, h: 62, hasCrystal: true }
+      ];
+
+      // Draw pillars
+      pillars.forEach(p => {
+        const topY = H - 28 - p.h;
+        
+        // Pillar Shadow / Base Body (Pitch Obsidian)
+        bCtx.fillStyle = '#0b0413';
+        bCtx.fillRect(p.x, topY, p.w, p.h + 28);
+
+        // Obsidian Highlights / Texture Blocks
+        bCtx.fillStyle = '#170928';
+        for (let py = topY; py < H - 24; py += 4) {
+          bCtx.fillRect(p.x, py, 2, 3);
+          if (py % 8 === 0) {
+            bCtx.fillRect(p.x + p.w - 3, py, 2, 3);
+          }
+        }
+        bCtx.fillStyle = '#260e42';
+        bCtx.fillRect(p.x + 2, topY, p.w - 4, 2);
+
+        // End Crystal on Top of Certain Pillars
+        if (p.hasCrystal) {
+          const crystalX = p.x + Math.floor(p.w / 2);
+          const crystalY = topY - 7;
+
+          // Crystal Core (Magenta Diamond)
+          bCtx.fillStyle = '#f43f5e';
+          bCtx.fillRect(crystalX - 1, crystalY - 2, 3, 5);
+          bCtx.fillStyle = '#fbcfe8';
+          bCtx.fillRect(crystalX, crystalY - 1, 1, 3);
+
+          // Crystal Outer Glass Spin
+          bCtx.fillStyle = 'rgba(236, 72, 153, 0.6)';
+          bCtx.fillRect(crystalX - 3, crystalY - 1, 2, 3);
+          bCtx.fillRect(crystalX + 2, crystalY - 1, 2, 3);
+
+          // Crystal Light Glow Radius
+          bCtx.fillStyle = 'rgba(217, 70, 239, 0.15)';
+          bCtx.fillRect(crystalX - 10, crystalY - 10, 21, 21);
+
+          // Occasional Healing Beam Upwards into the Sky
+          if (p.h > 70) {
+            bCtx.fillStyle = 'rgba(232, 121, 249, 0.25)';
+            bCtx.fillRect(crystalX - 1, 0, 3, crystalY);
+            bCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            bCtx.fillRect(crystalX, 0, 1, crystalY);
+          }
+        }
+      });
+
+      // 4. MAIN END STONE ISLAND (Stepped Floating Island in the Void)
+      const islandBaseY = H - 26;
+      
+      // Island Top Surface Layer (End Stone Pale Cream Yellowish)
+      bCtx.fillStyle = '#d5d299'; // Classic Minecraft End Stone Cream
+      bCtx.fillRect(0, islandBaseY, W, 4);
+
+      // End Stone Speckles & Texture
+      for (let x = 0; x < W; x += 2) {
+        if ((x % 6 === 0) || (x % 10 === 0)) {
+          bCtx.fillStyle = '#b5b174';
+          bCtx.fillRect(x, islandBaseY, 2, 2);
+        }
+        if (x % 8 === 0) {
+          bCtx.fillStyle = '#ebd896';
+          bCtx.fillRect(x + 1, islandBaseY + 1, 2, 2);
+        }
+      }
+
+      // Island Sub-Surface & Cliff Body (Darkening Downwards)
+      bCtx.fillStyle = '#949058';
+      bCtx.fillRect(0, islandBaseY + 4, W, 6);
+
+      bCtx.fillStyle = '#4c4232';
+      bCtx.fillRect(0, islandBaseY + 10, W, 8);
+
+      bCtx.fillStyle = '#221921';
+      bCtx.fillRect(0, islandBaseY + 18, W, H - (islandBaseY + 18));
+
+      // Stepped bottom edge fading into the void
+      for (let x = 0; x < W; x += 4) {
+        const fallDepth = Math.floor(Math.sin(x * 0.1) * 3) + 2;
+        bCtx.fillStyle = '#140c17';
+        bCtx.fillRect(x, islandBaseY + 18, 4, fallDepth);
+      }
+
+      // 5. SCALE BUFFER TO HIGH-RES 1920x1080 WITH CRISP PIXELS
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(buffer, 0, 0, canvas.width, canvas.height);
+    }
+
+    // Initial Draw
+    drawTheEndPixelArt();
+
+    // Event Handlers
+    document.getElementById('btnRegenerate').addEventListener('click', () => {
+      drawTheEndPixelArt();
+    });
+
+    document.getElementById('btnDownload').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'seedruns_the_end_wallpaper.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
+</body>
+</html>

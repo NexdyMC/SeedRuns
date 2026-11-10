@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Pixel Art Sunset Generator - Horizon Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+  </style>
+</head>
+<body class="bg-[#0b0714] text-gray-100 min-h-screen flex flex-col items-center justify-center p-6 selection:bg-purple-600 selection:text-white">
+
+  <!-- Header -->
+  <div class="text-center mb-6 max-w-xl">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-3">
+      <i data-lucide="palette" class="w-3.5 h-3.5 text-pink-400"></i>
+      <span>Horizon-Inspired Wallpaper Generator</span>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-purple-200 via-pink-300 to-amber-200 bg-clip-text text-transparent">
+      Minecraft Pixel Art Sunset Canvas
+    </h1>
+    <p class="text-xs text-purple-300/70 mt-1">
+      Hasilkan wallpaper pixel art atmosferik Minecraft (Sunset, Bintang, Siluet Pohon & Gunung) langsung di canvas HTML5 dan download dengan resolusi HD.
+    </p>
+  </div>
+
+  <!-- Canvas Container with Glassmorphism Frame -->
+  <div class="relative bg-purple-950/40 border border-purple-500/30 rounded-2xl p-3 shadow-2xl backdrop-blur-xl flex flex-col items-center">
+    
+    <!-- Canvas Preview (Scaled visually in CSS, native internal resolution 384x216 or upscale to 1920x1080) -->
+    <div class="relative rounded-xl overflow-hidden shadow-2xl border border-purple-500/20 max-w-full">
+      <canvas id="pixelCanvas" width="1920" height="1080" class="w-[840px] max-w-full aspect-video block bg-[#0a0515]"></canvas>
+      
+      <!-- Overlay Tag -->
+      <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md border border-purple-500/30 rounded-lg px-2.5 py-1 text-[10px] font-mono text-purple-200 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        1920x1080 HD Pixel Art
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-3 w-full mt-4 px-2">
+      <!-- Seed / Info -->
+      <div class="flex items-center gap-2 text-xs text-purple-300/70 font-mono">
+        <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+        <span>Palette: Synthwave Nether Sunset</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Regenerate Button -->
+        <button id="btnRegenerate" class="flex items-center gap-2 bg-purple-900/60 hover:bg-purple-800/80 border border-purple-500/40 text-purple-200 px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-95">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-300"></i>
+          <span>Acak Bintang & Gunung</span>
+        </button>
+
+        <!-- Download Button -->
+        <button id="btnDownload" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-95 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-lg shadow-purple-600/30 active:scale-95">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Download Wallpaper PNG</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Instruction Footer -->
+  <div class="mt-5 text-center text-xs text-purple-300/50 flex items-center gap-2">
+    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+    <span>File hasil unduhan bisa langsung kamu jadikan wallpaper background untuk aplikasi Tauri SeedRuns!</span>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const canvas = document.getElementById('pixelCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Low resolution dimensions for authentic chunky pixel-art look
+    const PIXEL_W = 240;
+    const PIXEL_H = 135;
+
+    // Offscreen buffer for crisp pixelation
+    const buffer = document.createElement('canvas');
+    buffer.width = PIXEL_W;
+    buffer.height = PIXEL_H;
+    const bCtx = buffer.getContext('2d');
+
+    function drawPixelArt() {
+      // 1. SKY GRADIENT (Night sky to Horizon sunset)
+      const skyGrad = bCtx.createLinearGradient(0, 0, 0, PIXEL_H);
+      skyGrad.addColorStop(0.0, '#0c071e'); // Deep Space Purple
+      skyGrad.addColorStop(0.35, '#1e0e38'); // Night Purple
+      skyGrad.addColorStop(0.60, '#42144d'); // Dark Violet
+      skyGrad.addColorStop(0.72, '#7a1f59'); // Magenta Horizon
+      skyGrad.addColorStop(0.82, '#b83b5e'); // Crimson Rose
+      skyGrad.addColorStop(0.92, '#f07b3f'); // Golden Amber Sunset
+      skyGrad.addColorStop(1.0, '#ffd460'); // Glow Sun Yellow
+      bCtx.fillStyle = skyGrad;
+      bCtx.fillRect(0, 0, PIXEL_W, PIXEL_H);
+
+      // 2. STARS (Twinkling pixels in the upper sky)
+      bCtx.fillStyle = '#ffffff';
+      for (let i = 0; i < 90; i++) {
+        const x = Math.floor(Math.random() * PIXEL_W);
+        const y = Math.floor(Math.random() * (PIXEL_H * 0.58));
+        const opacity = Math.random() * 0.8 + 0.2;
+        bCtx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+        bCtx.fillRect(x, y, 1, 1);
+
+        // Rare cross star
+        if (i % 15 === 0) {
+          bCtx.fillStyle = 'rgba(255, 230, 255, 0.7)';
+          bCtx.fillRect(x - 1, y, 3, 1);
+          bCtx.fillRect(x, y - 1, 1, 3);
+        }
+      }
+
+      // 3. PIXEL SUN (Minecraft Blocky Half Sun on Horizon)
+      const sunCenterX = Math.floor(PIXEL_W * 0.75);
+      const sunCenterY = Math.floor(PIXEL_H * 0.74);
+      const sunRadius = 24;
+
+      // Sun Outer Glow
+      for (let y = -sunRadius; y <= 4; y++) {
+        for (let x = -sunRadius; x <= sunRadius; x++) {
+          if (x * x + y * y <= sunRadius * sunRadius) {
+            bCtx.fillStyle = 'rgba(255, 214, 100, 0.18)';
+            bCtx.fillRect(sunCenterX + x, sunCenterY + y, 1, 1);
+          }
+        }
+      }
+
+      // Sun Core (Blocky Steps)
+      for (let y = -sunRadius + 3; y <= 4; y++) {
+        const rowWidth = Math.floor(Math.sqrt((sunRadius - 3) ** 2 - y ** 2));
+        bCtx.fillStyle = '#ffeaa7';
+        bCtx.fillRect(sunCenterX - rowWidth, sunCenterY + y, rowWidth * 2, 1);
+      }
+
+      // 4. DISTANT CLOUDS (Minecraft Flat Horizontal Stepped Clouds)
+      function drawCloud(cx, cy, length, color) {
+        bCtx.fillStyle = color;
+        bCtx.fillRect(cx, cy, length, 2);
+        bCtx.fillRect(cx + 4, cy - 1, length - 8, 1);
+        bCtx.fillRect(cx + 8, cy - 2, length - 16, 1);
+      }
+      drawCloud(15, 65, 55, 'rgba(122, 31, 89, 0.5)');
+      drawCloud(120, 78, 70, 'rgba(240, 123, 63, 0.35)');
+      drawCloud(70, 85, 45, 'rgba(184, 59, 94, 0.45)');
+
+      // 5. DISTANT MOUNTAIN RIDGE (Far Silhouette - Dark Crimson)
+      bCtx.fillStyle = '#2b0938';
+      let height = 98;
+      for (let x = 0; x < PIXEL_W; x++) {
+        if (x % 3 === 0) {
+          height += Math.floor(Math.random() * 3) - 1;
+          height = Math.max(90, Math.min(108, height));
+        }
+        bCtx.fillRect(x, height, 1, PIXEL_H - height);
+      }
+
+      // 6. MIDGROUND MOUNTAIN / HILLS (Deep Violet Purple)
+      bCtx.fillStyle = '#1b0728';
+      let midHeight = 108;
+      for (let x = 0; x < PIXEL_W; x++) {
+        if (x % 2 === 0) {
+          midHeight += Math.floor(Math.random() * 3) - 1;
+          midHeight = Math.max(102, Math.min(118, midHeight));
+        }
+        bCtx.fillRect(x, midHeight, 1, PIXEL_H - midHeight);
+      }
+
+      // 7. FOREGROUND MINECRAFT OAK & SPRUCE TREES SILHOUETTE (Near Pitch Black-Purple)
+      bCtx.fillStyle = '#0d0417';
+      // Ground plane
+      bCtx.fillRect(0, 122, PIXEL_W, PIXEL_H - 122);
+
+      // Function to draw a blocky Minecraft tree
+      function drawMinecraftTree(baseX, baseY, trunkH, foliageType) {
+        // Trunk (2px wide)
+        bCtx.fillStyle = '#0a0212';
+        bCtx.fillRect(baseX, baseY - trunkH, 2, trunkH);
+
+        // Leaves Foliage
+        bCtx.fillStyle = '#0d0417';
+        if (foliageType === 'oak') {
+          // Blocky round oak
+          bCtx.fillRect(baseX - 3, baseY - trunkH - 6, 8, 5);
+          bCtx.fillRect(baseX - 4, baseY - trunkH - 5, 10, 3);
+          bCtx.fillRect(baseX - 2, baseY - trunkH - 7, 6, 1);
+        } else {
+          // Pine / Spruce Triangle Tree
+          bCtx.fillRect(baseX - 3, baseY - trunkH - 1, 8, 2);
+          bCtx.fillRect(baseX - 2, baseY - trunkH - 4, 6, 3);
+          bCtx.fillRect(baseX - 1, baseY - trunkH - 7, 4, 3);
+          bCtx.fillRect(baseX, baseY - trunkH - 9, 2, 2);
+        }
+      }
+
+      // Populate Trees along the bottom
+      const treePositions = [
+        { x: 8, h: 9, type: 'spruce' },
+        { x: 18, h: 7, type: 'oak' },
+        { x: 26, h: 10, type: 'spruce' },
+        { x: 38, h: 6, type: 'oak' },
+        { x: 50, h: 8, type: 'spruce' },
+        { x: 75, h: 7, type: 'oak' },
+        { x: 90, h: 9, type: 'spruce' },
+        { x: 105, h: 8, type: 'spruce' },
+        { x: 130, h: 6, type: 'oak' },
+        { x: 145, h: 10, type: 'spruce' },
+        { x: 160, h: 8, type: 'oak' },
+        { x: 180, h: 9, type: 'spruce' },
+        { x: 195, h: 7, type: 'oak' },
+        { x: 215, h: 10, type: 'spruce' },
+        { x: 230, h: 8, type: 'oak' },
+      ];
+
+      treePositions.forEach(t => {
+        drawMinecraftTree(t.x, 124, t.h, t.type);
+      });
+
+      // 8. RENDER BUFFER TO HIGH-RES 1920x1080 CANVAS WITH CRISP PIXELS
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(buffer, 0, 0, canvas.width, canvas.height);
+    }
+
+    // Initial Render
+    drawPixelArt();
+
+    // Button Events
+    document.getElementById('btnRegenerate').addEventListener('click', () => {
+      drawPixelArt();
+    });
+
+    document.getElementById('btnDownload').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'seedruns_pixel_wallpaper.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
+</body>
+</html>

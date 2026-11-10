@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeedRuns - Gen Alpha Wireframe (Hyper-Pop / Bedwars Arcade)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Fredoka', cursive, sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e1035;
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ec4899;
+      border-radius: 999px;
+    }
+    .bg-gena {
+      background: radial-gradient(circle at 10% 10%, rgba(236, 72, 153, 0.25) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.3) 0%, transparent 40%),
+                  radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                  linear-gradient(180deg, #160d29 0%, #0d071a 100%);
+    }
+    .chunky-card {
+      background: rgba(35, 18, 64, 0.75);
+      border: 3px solid rgba(192, 132, 252, 0.3);
+      box-shadow: 0 8px 0 rgba(20, 10, 36, 0.9);
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .chunky-card:hover {
+      transform: translateY(-3px);
+      border-color: #ec4899;
+      box-shadow: 0 12px 0 rgba(20, 10, 36, 0.9), 0 0 25px rgba(236, 72, 153, 0.3);
+    }
+    .chunky-active {
+      background: rgba(58, 25, 107, 0.9);
+      border-color: #f43f5e;
+      box-shadow: 0 10px 0 rgba(20, 10, 36, 0.9), 0 0 30px rgba(244, 63, 94, 0.4);
+    }
+    .btn-3d-purple {
+      background: linear-gradient(180deg, #a855f7 0%, #7e22ce 100%);
+      box-shadow: 0 4px 0 #581c87;
+      transition: all 0.1s ease;
+    }
+    .btn-3d-purple:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #581c87;
+    }
+    .btn-3d-pink {
+      background: linear-gradient(180deg, #f43f5e 0%, #e11d48 100%);
+      box-shadow: 0 4px 0 #9f1239;
+      transition: all 0.1s ease;
+    }
+    .btn-3d-pink:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #9f1239;
+    }
+    .btn-3d-cyan {
+      background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+      box-shadow: 0 4px 0 #155e75;
+      transition: all 0.1s ease;
+    }
+    .btn-3d-cyan:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #155e75;
+    }
+  </style>
+</head>
+<body class="bg-gena text-white min-h-screen flex flex-col selection:bg-pink-500 selection:text-white">
+
+  <!-- Gen Alpha Topbar: Colorful & High-Contrast -->
+  <header class="bg-purple-950/80 backdrop-blur-xl border-b-4 border-purple-800/80 px-6 py-3 flex items-center justify-between sticky top-0 z-50 shadow-xl">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-500 to-cyan-400 p-0.5 shadow-lg transform -rotate-2 hover:rotate-0 transition-transform">
+        <div class="w-full h-full bg-purple-900 rounded-[14px] flex items-center justify-center">
+          <i data-lucide="flame" class="w-6 h-6 text-amber-300 animate-bounce"></i>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-2xl font-black tracking-wide bg-gradient-to-r from-pink-400 via-purple-300 to-cyan-300 bg-clip-text text-transparent">SeedRuns! 🚀</h1>
+          <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-pink-500 text-white shadow-md">1.16.1 PRO</span>
+        </div>
+        <p class="text-xs text-purple-300/80 font-semibold">Speedrun Structure Radar for Champions</p>
+      </div>
+    </div>
+
+    <!-- Right Quick Controls -->
+    <div class="flex items-center gap-3">
+      <!-- Folder Pill -->
+      <div class="hidden md:flex items-center gap-2 bg-purple-900/60 border-2 border-purple-600/40 rounded-2xl px-4 py-2 text-xs font-semibold text-purple-200">
+        <i data-lucide="gamepad" class="w-4 h-4 text-cyan-400"></i>
+        <span>.minecraft / saves</span>
+      </div>
+
+      <!-- 3D Reload Button -->
+      <button class="btn-3d-purple text-white px-4 py-2 rounded-2xl text-xs font-black flex items-center gap-2">
+        <i data-lucide="rotate-cw" class="w-4 h-4 text-pink-200"></i>
+        <span>RELOAD!</span>
+      </button>
+
+      <!-- 3D Find Seed -->
+      <button class="btn-3d-pink text-white px-5 py-2 rounded-2xl text-xs font-black flex items-center gap-2">
+        <i data-lucide="wand-2" class="w-4 h-4 text-amber-200"></i>
+        <span>AUTO FIND SEED 🔥</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <main class="flex-1 grid grid-cols-12 gap-5 p-5 max-w-[1680px] w-full mx-auto">
+    
+    <!-- LEFT SIDEBAR: World Saves (4 Cols) -->
+    <section class="col-span-12 lg:col-span-4 flex flex-col gap-3">
+      <div class="flex items-center justify-between px-2">
+        <div class="flex items-center gap-2">
+          <span class="text-lg font-black text-pink-300">🎮 My Worlds</span>
+          <span class="text-xs font-black bg-cyan-400 text-purple-950 px-2.5 py-0.5 rounded-full">6 Worlds</span>
+        </div>
+        <span class="text-xs text-purple-300/60 font-semibold">Fresh First</span>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative">
+        <i data-lucide="search" class="w-4 h-4 text-pink-400 absolute left-3.5 top-3.5"></i>
+        <input type="text" placeholder="Search world or lucky seed..." class="w-full bg-purple-950/60 border-2 border-purple-600/30 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-purple-400/50 focus:outline-none focus:border-pink-500 font-bold transition-all">
+      </div>
+
+      <!-- Chunky World Cards List -->
+      <div class="flex flex-col gap-3 overflow-y-auto max-h-[calc(100vh-220px)] pr-1">
+        
+        <!-- Active World Card (Selected) -->
+        <div class="chunky-card chunky-active rounded-3xl p-4 cursor-pointer relative overflow-hidden group">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-purple-900 border-2 border-pink-400 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-lg">
+              <img src="https://images.unsplash.com/photo-1627856013091-fed6e4e30025?auto=format&fit=crop&w=120&q=80" alt="World" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1">
+                <h3 class="text-sm font-black text-white truncate">🔥 GOD SEED RUN #84</h3>
+                <span class="text-[10px] font-black bg-emerald-400 text-emerald-950 px-2 py-0.5 rounded-full">1.16.1</span>
+              </div>
+              <p class="text-xs font-mono font-bold text-pink-300 truncate mt-0.5">-829104829104859201</p>
+              <div class="flex items-center gap-2 mt-1.5">
+                <span class="text-[10px] font-black bg-purple-900/80 text-cyan-300 px-2 py-0.5 rounded-lg border border-cyan-400/30">⚡ 2 min ago</span>
+                <span class="text-[10px] font-black bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-lg border border-amber-500/30">⭐ S-Tier Pace</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Normal World Card 2 -->
+        <div class="chunky-card rounded-3xl p-4 cursor-pointer group">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-purple-900/60 border-2 border-purple-500/40 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="crown" class="w-7 h-7 text-amber-400"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1">
+                <h3 class="text-sm font-black text-purple-100 truncate group-hover:text-pink-300">Treasure Room Practice</h3>
+                <span class="text-[10px] font-black bg-emerald-400 text-emerald-950 px-2 py-0.5 rounded-full">1.16.1</span>
+              </div>
+              <p class="text-xs font-mono font-bold text-purple-300/70 truncate mt-0.5">49201948501928401</p>
+              <div class="flex items-center gap-2 mt-1.5">
+                <span class="text-[10px] font-black bg-purple-900/80 text-purple-300 px-2 py-0.5 rounded-lg">28 min ago</span>
+                <span class="text-[10px] font-black text-rose-400">Treasure Bastion</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Normal World Card 3 -->
+        <div class="chunky-card rounded-3xl p-4 cursor-pointer group">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-purple-900/60 border-2 border-purple-500/40 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="swords" class="w-7 h-7 text-cyan-400"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1">
+                <h3 class="text-sm font-black text-purple-100 truncate group-hover:text-pink-300">Sub-20 Speedrun Try</h3>
+                <span class="text-[10px] font-black bg-emerald-400 text-emerald-950 px-2 py-0.5 rounded-full">1.16.1</span>
+              </div>
+              <p class="text-xs font-mono font-bold text-purple-300/70 truncate mt-0.5">-39019485029104819</p>
+              <div class="flex items-center gap-2 mt-1.5">
+                <span class="text-[10px] font-black bg-purple-900/80 text-purple-300 px-2 py-0.5 rounded-lg">2h ago</span>
+                <span class="text-[10px] font-black text-amber-400">Stables Bastion</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RIGHT SECTION: Inspector & Structures (8 Cols) -->
+    <section class="col-span-12 lg:col-span-8 flex flex-col gap-4">
+      
+      <!-- Chunky Banner -->
+      <div class="chunky-card rounded-3xl p-5 border-3 border-purple-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-black bg-gradient-to-r from-pink-500 to-purple-600 text-white px-3 py-1 rounded-full uppercase tracking-wider shadow">SELECTED ADVENTURE</span>
+          <h2 class="text-2xl font-black text-white mt-1">🔥 GOD SEED RUN #84</h2>
+        </div>
+
+        <!-- Seed Pill with Big Copy Button -->
+        <div class="bg-purple-950/80 border-2 border-pink-500/40 rounded-2xl px-4 py-2 flex items-center gap-3">
+          <div>
+            <p class="text-[10px] font-bold text-pink-300 uppercase">SEED NUMBER</p>
+            <p class="text-sm font-mono font-black text-cyan-300 tracking-wider">-829104829104859201</p>
+          </div>
+          <button class="btn-3d-cyan p-2.5 rounded-xl text-white" title="Copy Seed">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Nether Structures 2-Col -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <!-- Bastion Card -->
+        <div class="chunky-card rounded-3xl p-5 border-3 border-amber-500/40 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center text-amber-300">
+                  <i data-lucide="shield" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-white">Bastion Remnant</h3>
+                  <span class="text-xs text-amber-300/80 font-semibold">Nether Dimension</span>
+                </div>
+              </div>
+              <span class="text-xs font-black px-3 py-1 rounded-full bg-amber-400 text-amber-950 shadow-md">
+                HOUSING 🏰
+              </span>
+            </div>
+
+            <!-- Coords Box -->
+            <div class="bg-purple-950/90 rounded-2xl p-3.5 border-2 border-amber-500/30 my-3 font-mono">
+              <div class="flex justify-between items-center text-xs mb-1.5">
+                <span class="text-purple-300 font-bold">Nether X, Z:</span>
+                <span class="text-sm font-black text-white">64, -128</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-purple-300 font-bold">Distance:</span>
+                <span class="text-sm font-black text-emerald-400">143 blocks ⚡ SUPER CLOSE!</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Dual Actions -->
+          <div class="grid grid-cols-2 gap-3 mt-1">
+            <button class="btn-3d-purple py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-1.5">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span>COORDS</span>
+            </button>
+            <button class="btn-3d-pink py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-1.5">
+              <i data-lucide="terminal" class="w-4 h-4"></i>
+              <span>COPY /TP 🚀</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fortress Card -->
+        <div class="chunky-card rounded-3xl p-5 border-3 border-rose-500/40 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-rose-500/20 border-2 border-rose-400 flex items-center justify-center text-rose-300">
+                  <i data-lucide="castle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="text-base font-black text-white">Nether Fortress</h3>
+                  <span class="text-xs text-rose-300/80 font-semibold">Nether Dimension</span>
+                </div>
+              </div>
+              <span class="text-xs font-black px-3 py-1 rounded-full bg-rose-500 text-white shadow-md">
+                BLAZE SPAWNER 🔥
+              </span>
+            </div>
+
+            <!-- Coords Box -->
+            <div class="bg-purple-950/90 rounded-2xl p-3.5 border-2 border-rose-500/30 my-3 font-mono">
+              <div class="flex justify-between items-center text-xs mb-1.5">
+                <span class="text-purple-300 font-bold">Nether X, Z:</span>
+                <span class="text-sm font-black text-white">-96, 80</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-purple-300 font-bold">Distance:</span>
+                <span class="text-sm font-black text-cyan-300">125 blocks 🏃 INSTANT!</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Dual Actions -->
+          <div class="grid grid-cols-2 gap-3 mt-1">
+            <button class="btn-3d-purple py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-1.5">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span>COORDS</span>
+            </button>
+            <button class="btn-3d-pink py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-1.5">
+              <i data-lucide="terminal" class="w-4 h-4"></i>
+              <span>COPY /TP 🚀</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Overworld Stronghold + 2D Radar Canvas -->
+      <div class="chunky-card rounded-3xl p-5 border-3 border-cyan-500/40 grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+        <div class="md:col-span-7 flex flex-col justify-between h-full">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-black px-3 py-1 rounded-full bg-cyan-400 text-purple-950 shadow">OVERWORLD END PORTAL</span>
+              <h3 class="text-base font-black text-white">Stronghold Ring 1 🎯</h3>
+            </div>
+            
+            <p class="text-xs text-purple-200/90 font-medium mb-3">
+              Portal End terdekat untuk mengalahkan Ender Dragon dan tamatkan game secepat kilat!
+            </p>
+
+            <div class="bg-purple-950/90 rounded-2xl p-3.5 border-2 border-cyan-500/30 mb-3 font-mono text-xs">
+              <div class="flex justify-between mb-1.5">
+                <span class="text-purple-300 font-bold">Overworld:</span>
+                <span class="font-black text-white text-sm">1424, 64, -688</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-purple-300 font-bold">Nether Exit:</span>
+                <span class="font-black text-pink-400 text-sm">178, -86</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button class="flex-1 btn-3d-purple py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-2">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span>COORDS</span>
+            </button>
+            <button class="flex-1 btn-3d-cyan py-2.5 rounded-2xl text-xs font-black flex items-center justify-center gap-2">
+              <i data-lucide="terminal" class="w-4 h-4"></i>
+              <span>TP STRONGHOLD 🐉</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chunky Radar Preview -->
+        <div class="md:col-span-5 bg-purple-950/90 border-3 border-pink-500/40 rounded-3xl p-4 flex flex-col items-center justify-center relative aspect-square overflow-hidden shadow-inner">
+          <div class="absolute inset-0 bg-[radial-gradient(#ec4899_1.5px,transparent_1.5px)] [background-size:16px_16px] opacity-30"></div>
+          
+          <!-- Center Spawn Blip -->
+          <div class="w-4 h-4 rounded-full bg-cyan-400 ring-4 ring-cyan-400/40 z-10 animate-pulse" title="Spawn (0,0)"></div>
+          <div class="absolute w-36 h-36 rounded-full border-2 border-dashed border-pink-400/50"></div>
+          <div class="absolute w-24 h-24 rounded-full border-2 border-purple-400/30"></div>
+
+          <!-- Bastion Blip -->
+          <div class="absolute top-10 right-12 flex items-center gap-1 z-10">
+            <div class="w-3 h-3 bg-amber-400 rounded-lg shadow-lg"></div>
+            <span class="text-xs font-black text-amber-300">BASTION</span>
+          </div>
+
+          <!-- Fortress Blip -->
+          <div class="absolute bottom-12 left-10 flex items-center gap-1 z-10">
+            <div class="w-3 h-3 bg-rose-500 rounded-full shadow-lg"></div>
+            <span class="text-xs font-black text-rose-300">FORTRESS</span>
+          </div>
+
+          <span class="absolute bottom-2 text-[10px] font-black text-pink-300/60 uppercase">2D RADAR ACTIVE</span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Gen Alpha Footer -->
+  <footer class="bg-purple-950/90 border-t-4 border-purple-800/80 px-6 py-2.5 flex items-center justify-between text-xs font-bold text-purple-300/80">
+    <div class="flex items-center gap-3">
+      <span class="flex items-center gap-1.5 text-emerald-400 font-black">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-bounce"></span>
+        100% READY!
+      </span>
+      <span>Cubiomes Super Fast Engine</span>
+    </div>
+    <div class="text-pink-400 font-black">
+      RAM: ZERO LEAK! 🔥
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
